@@ -1,0 +1,10 @@
+{{define "title"}}
+  {{template "authTitle" .}}
+{{end}}
+{{define "main"}}
+  <header>
+    <h1><a href='/'>Baker</a></h1>
+  </header>
+  {{template "nav" .}}
+  {{template "authPage"}}
+{{end}}

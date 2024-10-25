@@ -1,0 +1,31 @@
+{{define "title"}}Predict Production{{end}}
+{{define "main"}}
+  <section>
+    <form action="/predict" method="POST" novalidate>
+      <input type="hidden" name="csrf_token" />
+      <div>
+        <label>Weather:</label>
+        <!-- <label class="error"></label> -->
+        <input type="text" name="weather" />
+      </div>
+      <div>
+        <label>Weekday/Holiday:</label>
+        <!-- <label class="error"></label> -->
+        <input type="text" name="Weekday" />
+      </div>
+      <div>
+        <label>Special Event:</label>
+        <!-- <label class="error"></label> -->
+        <input type="text" name="specialEvent" />
+      </div>
+      <div>
+        <label>K - (How many nearest neighbours data to calculate with e.g 10):</label>
+        <!-- <label class="error"></label> -->
+        <input type="text" name="specialEvent" />
+      </div>
+      <div>
+        <input type="submit" value="Predict" />
+      </div>
+    </form>
+  </section>
+{{end}}

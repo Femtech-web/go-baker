@@ -1,0 +1,21 @@
+{{define "title"}}Login{{end}}
+{{define "main"}}
+  <section>
+    <form action="/user/login" method="POST" novalidate>
+      <input type="hidden" name="csrf_token" />
+      <div>
+        <label>Email:</label>
+        <!-- <label class="error"></label> -->
+        <input type="email" name="email" />
+      </div>
+      <div>
+        <label>Password:</label>
+        <!-- <label class="error"></label> -->
+        <input type="password" name="password" />
+      </div>
+      <div>
+        <input type="submit" value="Login" />
+      </div>
+    </form>
+  </section>
+{{end}}

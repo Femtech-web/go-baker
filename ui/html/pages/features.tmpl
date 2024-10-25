@@ -1,0 +1,23 @@
+{{define "title"}}Add Feaatures{{end}}
+{{define "main"}}
+  <header>
+    <h3>Welcome</h3>
+    <p>
+      Please add the factors (features) that affect your production demand
+    </p>
+  </header>
+  <section>
+    <div class="features"></div>
+    <form>
+      <input type="hidden" name="csrf_token" />
+      <div>
+        <label>Input Feature (max - 3):</label>
+        <input type="text" name="feature" class="features-input" />
+      </div>
+      <div class="features-btns">
+        <button class="features-add-btn">Add</button>
+        <button type="submit" class="features-continue-btn">Continue</button>
+      </div>
+    </form>
+  </section>
+{{end}}

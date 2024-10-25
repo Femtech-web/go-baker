@@ -1,0 +1,26 @@
+{{define "title"}}Signup{{end}}
+{{define "main"}}
+  <section>
+    <form action="/user/signup" method="POST" novalidate>
+      <input type="hidden" name="csrf_token" />
+      <div>
+        <label>Name:</label>
+        <!-- <label class="error"></label> -->
+        <input type="text" name="name" />
+      </div>
+      <div>
+        <label>Email:</label>
+        <!-- <label class="error"></label> -->
+        <input type="email" name="email" />
+      </div>
+      <div>
+        <label>Password:</label>
+        <!-- <label class="error"></label> -->
+        <input type="password" name="password" />
+      </div>
+      <div>
+        <input type="submit" value="Signup" />
+      </div>
+    </form>
+  </section>
+{{end}}
