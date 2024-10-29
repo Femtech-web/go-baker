@@ -342,6 +342,18 @@ input[type="submit"]:hover {
   text-decoration: none;
 }
 
+.logout {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.logout:hover {
+  text-decoration: underline;
+}
+
 form div {
   margin-bottom: 18px;
 }
@@ -375,6 +387,25 @@ form label {
   display: inline-block;
   margin-bottom: 9px;
   color: var(--dark);
+}
+
+div.flash {
+  color: #ffffff;
+  font-weight: bold;
+  background-color: #34495e;
+  padding: 18px;
+  margin-bottom: 36px;
+  text-align: center;
+  margin: 2px calc((100% - 800px) / 2) 0;
+}
+
+div.error {
+  color: #ffffff;
+  background-color: #c0392b;
+  padding: 18px;
+  margin-bottom: 36px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .error {

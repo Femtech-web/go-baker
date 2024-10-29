@@ -1,12 +1,22 @@
 {{define "nav"}}
 <nav>
   <div>
-    <a href="/">Home</a>
+  {{if .IsAuthenticated}}
     <a href="/predict">Predict</a>
+  {{else}}
+    <a href="/">Home</a>
+  {{end}}
   </div>
   <div>
-    <a href="/signup">Signup</a>
-    <a href="/login">Login</a>
+    {{if .IsAuthenticated}}
+      <form action='/logout' method='POST'>
+        <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+        <button class='logout'>Logout</button>
+      </form>
+    {{else}}
+      <a href='/signup'>Signup</a>
+      <a href='/login'>Login</a>
+    {{end}}
   </div>
 </nav>
 {{end}}

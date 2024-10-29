@@ -25,7 +25,7 @@ type application struct {
 	sessionManager *scs.SessionManager
 	debug          bool
 	templateCache  map[string]*template.Template
-	userModel      *models.UserModel
+	users          *models.UserModel
 }
 
 // declare my main func then in it:
@@ -70,7 +70,7 @@ func main() {
 		sessionManager: sessionManager,
 		debug:          *debug,
 		templateCache:  templateCache,
-		userModel:      &models.UserModel{DB: db},
+		users:          &models.UserModel{DB: db},
 	}
 
 	// todo: initialize dependencies for my server struct

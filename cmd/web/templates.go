@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/femtech-web/baker/internal/models"
 	"github.com/femtech-web/baker/ui"
 )
 
@@ -15,6 +16,7 @@ type templateData struct {
 	CSRFToken       string
 	IsAuthenticated bool
 	Form            any
+	User            *models.User
 }
 
 func humanDate(t time.Time) string {

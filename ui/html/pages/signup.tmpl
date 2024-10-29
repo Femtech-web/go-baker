@@ -1,21 +1,27 @@
 {{define "authTitle"}}Signup{{end}}
 {{define "authPage"}}
   <section>
-    <form action="/user/signup" method="POST" novalidate>
-      <input type="hidden" name="csrf_token" />
+    <form action='/signup' method='POST' novalidate>
+      <input type='hidden' name='csrf_token' value='{{.CSRFToken}}' />
       <div>
         <label>Name:</label>
-        <!-- <label class="error"></label> -->
-        <input type="text" name="name" />
+        {{with .Form.FieldErrors.name}}
+          <label class='error'>{{.}}</label>
+        {{end}}
+        <input type='text' name='name' value='{{.Form.Name}}' />
       </div>
       <div>
         <label>Email:</label>
-        <!-- <label class="error"></label> -->
-        <input type="email" name="email" />
+        {{with .Form.FieldErrors.email}}
+          <label class='error'>{{.}}</label>
+        {{end}}
+        <input type="email" name="email" value='{{.Form.Email}}' />
       </div>
       <div>
         <label>Password:</label>
-        <!-- <label class="error"></label> -->
+        {{with .Form.FieldErrors.password}}
+          <label class='error'>{{.}}</label>
+        {{end}}
         <input type="password" name="password" />
       </div>
       <div>
