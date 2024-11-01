@@ -94,15 +94,6 @@ if (uploadBtn && uploadInput) {
   });
 
   uploadInput.addEventListener("change", () => {
-    // const file = uploadInput.files[0];
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onload = (e) => {
-    //     const data = e.target.result;
-    //     console.log(data);
-    //   };
-    //   reader.readAsText(file);
-    // }
     const csrfToken = document.querySelector("input[name='csrf_token']").value;
 
     const file = uploadInput.files[0];
