@@ -19,6 +19,7 @@ for (var i = 0; i < navLinks.length; i++) {
 if (featuresBtn && featureInput) {
   let inputText = "";
   let featuresArr = [];
+
   featureInput.addEventListener("input", (e) => {
     inputText = e.target.value;
   });
@@ -56,9 +57,34 @@ if (featuresBtn && featureInput) {
     }
   });
 
-  // featuresSubmitBtn.addEventListener("submit", (e) => {
-  //   e.preventDefault();
-  // });
+  featuresSubmitBtn.addEventListener("click", (e) => {
+    if (featuresArr.length !== 0) {
+      const formData = new FormData();
+
+      const csrfToken = document.querySelector(
+        "input[name='csrf_token']"
+      ).value;
+
+      formData.append("features", JSON.stringify(featuresArr));
+      formData.append("csrf_token", csrfToken);
+
+      fetch("/api/features", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          if (response.status === 303) {
+            return response.json();
+          }
+        })
+        .then((data) => {
+          if (data.redirect) {
+            window.location.href = data.redirect;
+          }
+        })
+        .catch((error) => console.log("Error:", error));
+    }
+  });
 }
 
 // handles uploading company past data
@@ -68,14 +94,36 @@ if (uploadBtn && uploadInput) {
   });
 
   uploadInput.addEventListener("change", () => {
+    // const file = uploadInput.files[0];
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onload = (e) => {
+    //     const data = e.target.result;
+    //     console.log(data);
+    //   };
+    //   reader.readAsText(file);
+    // }
+    const csrfToken = document.querySelector("input[name='csrf_token']").value;
+
     const file = uploadInput.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = e.target.result;
-        console.log(data);
-      };
-      reader.readAsText(file);
-    }
+    console.log(file);
+    const formData = new FormData();
+
+    formData.append("file", file);
+    formData.append("csrf_token", csrfToken);
+
+    fetch("/api/import", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.ok) {
+          console.log("File uploaded successfully");
+        } else {
+          console.log("File upload failed");
+        }
+      })
+      .catch((error) => console.log("Error:", error));
   });
 }

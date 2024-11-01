@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+	"strings"
 	"time"
 
 	"github.com/go-playground/form/v4"
@@ -67,8 +68,15 @@ func (app *application) render(w http.ResponseWriter, status int, page string, d
 	buf.WriteTo(w)
 }
 
-func (app *application) decodeForm(r *http.Request, dst any) error {
-	err := r.ParseForm()
+func (app *application) decodeForm(r *http.Request, t string, dst any) error {
+	var err error
+
+	if t == "multipart" {
+		err = r.ParseMultipartForm(32 << 20)
+	} else {
+		err = r.ParseForm()
+	}
+
 	if err != nil {
 		return err
 	}
@@ -95,4 +103,33 @@ func (app *application) isAuthenticated(r *http.Request) bool {
 	}
 
 	return isAuthenticated
+}
+
+func (app *application) currentUser(r *http.Request) int {
+	return app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+}
+
+func (app *application) csvMap(header, columns []string) (map[string]int, []string) {
+	csvToDBMap := make(map[string]int)
+	features := make([]string, 0)
+
+	for i, colName := range header {
+		for _, dbColumn := range columns {
+			if strings.Contains(dbColumn, "feature") {
+				feature := strings.Split(dbColumn, "_")[1]
+				n := strings.Split(dbColumn, "_")[0]
+
+				if colName == feature {
+					csvToDBMap[n] = i
+					features = append(features, feature)
+				}
+			} else {
+				if colName == dbColumn {
+					csvToDBMap[colName] = i
+				}
+			}
+		}
+	}
+
+	return csvToDBMap, features
 }

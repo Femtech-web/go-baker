@@ -1,7 +1,7 @@
 {{define "authTitle"}}Signup{{end}}
 {{define "authPage"}}
   <section>
-    <form action='/signup' method='POST' novalidate>
+    <form action='/api/signup' method='POST' novalidate>
       <input type='hidden' name='csrf_token' value='{{.CSRFToken}}' />
       <div>
         <label>Name:</label>

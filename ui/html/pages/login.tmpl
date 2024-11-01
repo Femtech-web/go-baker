@@ -1,7 +1,7 @@
 {{define "authTitle"}}Login{{end}}
 {{define "authPage"}}
   <section>
-    <form action="/login" method="POST" novalidate>
+    <form action="/api/login" method="POST" novalidate>
       <input type="hidden" name="csrf_token" value='{{.CSRFToken}}' />
       {{range .Form.NonFieldErrors}}
         <div class='error'>{{.}}</div>

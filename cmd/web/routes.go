@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/femtech-web/baker/ui"
@@ -15,7 +14,7 @@ func (app *application) routes() http.Handler {
 
 	// declare the http-router notFound handler
 	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Not found")
+		app.notFound(w)
 	})
 
 	// setup the file server
@@ -27,10 +26,15 @@ func (app *application) routes() http.Handler {
 
 	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.getHome))
 	router.Handler(http.MethodGet, "/signup", dynamic.ThenFunc(app.getSignup))
-	router.Handler(http.MethodPost, "/signup", dynamic.ThenFunc(app.userSignup))
+	router.Handler(http.MethodPost, "/api/signup", dynamic.ThenFunc(app.userSignup))
 	router.Handler(http.MethodGet, "/login", dynamic.ThenFunc(app.getLogin))
-	router.Handler(http.MethodPost, "/login", dynamic.ThenFunc(app.userLogin))
-	router.Handler(http.MethodPost, "/logout", dynamic.ThenFunc(app.userLogout))
+	router.Handler(http.MethodPost, "/api/login", dynamic.ThenFunc(app.userLogin))
+	router.Handler(http.MethodPost, "/api/logout", dynamic.ThenFunc(app.userLogout))
+
+	router.Handler(http.MethodGet, "/features", dynamic.ThenFunc(app.getFeatures))
+	router.Handler(http.MethodPost, "/api/features", dynamic.ThenFunc(app.addFeatures))
+	router.Handler(http.MethodGet, "/import", dynamic.ThenFunc(app.getImport))
+	router.Handler(http.MethodPost, "/api/import", dynamic.ThenFunc(app.savePastData))
 	router.Handler(http.MethodGet, "/predict", dynamic.ThenFunc(app.getPredict))
 
 	standard := alice.New(app.recoverPanic, app.logRequest, secureHeaders)

@@ -26,6 +26,7 @@ type application struct {
 	debug          bool
 	templateCache  map[string]*template.Template
 	users          *models.UserModel
+	features       *models.FeaturesModel
 }
 
 // declare my main func then in it:
@@ -71,6 +72,7 @@ func main() {
 		debug:          *debug,
 		templateCache:  templateCache,
 		users:          &models.UserModel{DB: db},
+		features:       &models.FeaturesModel{DB: db},
 	}
 
 	// todo: initialize dependencies for my server struct

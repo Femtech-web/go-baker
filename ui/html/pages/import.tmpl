@@ -1,0 +1,71 @@
+{{define "title"}}Import Historic Data{{end}}
+{{define "main"}}
+  <header>
+    <h3>Past Production Data</h3>
+    <p>Import your company's past production data</p>
+  </header>
+  <section>
+    <div class="import-desc">
+      <p>
+        You'll need historical data on past production quantities and the
+        associated features (weather, weekend/holiday, special events) for
+        those days. For example:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Weather</th>
+            <th>Weekend</th>
+            <th>Event</th>
+            <th>Loaves</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>20-10-2024</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+            <td>250</td>
+          </tr>
+          <tr>
+            <td>21-10-2024</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>200</td>
+          </tr>
+          <tr>
+            <td>22-10-2024</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>300</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        (<b>1</b> means yes and <b>0</b> means No. for weekday, <b>1</b> means
+        Sunny and <b>0</b>
+        means Rainy)
+      </p>
+      <p>
+        Each row represents a day’s condition and how many products (e.g.,
+        loaves of bread) were sold. This is your training data for the KNN
+        algorithm.
+      </p>
+    </div>
+    <div>
+      <div class="upload-container">
+        <p>No file selected</p>
+        <input type="hidden" name="csrf_token" value='{{.CSRFToken}}' />
+        <input type="file" id="upload-input" multiple hidden />
+        <button id="upload-btn" type="button">click to upload</button>
+      </div>
+      <div class="upload-btns">
+        <button class="features-continue-btn">Finish</button>
+      </div>
+    </div>
+  </section>
+{{end}}
