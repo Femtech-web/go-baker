@@ -8,9 +8,22 @@ import (
 	"time"
 )
 
+type Feature struct {
+	ID       int
+	Loaves   int
+	Feature1 int
+	Feature2 int
+	Feature3 int
+	Date     time.Time
+}
+
 type FeaturesModel struct {
 	DB *sql.DB
 }
+
+// func (m *FeaturesModel) GetAll() ([]*Feature, error) {
+
+// }
 
 func (m *FeaturesModel) GetColumns() ([]string, error) {
 	stmt := "SHOW COLUMNS FROM features"

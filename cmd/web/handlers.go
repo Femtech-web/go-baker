@@ -242,6 +242,8 @@ func (app *application) savePastData(w http.ResponseWriter, r *http.Request) {
 
 	header := records[0]
 	csvToDBMap, features := app.csvMap(header, columns)
+	fmt.Printf("csvMap: %v", csvToDBMap)
+	fmt.Printf("features: %v", features)
 
 	err = app.features.InsertRecords(records[1:], csvToDBMap, features)
 	if err != nil {

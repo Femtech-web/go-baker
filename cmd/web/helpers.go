@@ -113,12 +113,18 @@ func (app *application) csvMap(header, columns []string) (map[string]int, []stri
 	csvToDBMap := make(map[string]int)
 	features := make([]string, 0)
 
-	for i, colName := range header {
-		for _, dbColumn := range columns {
-			if strings.Contains(dbColumn, "feature") {
-				feature := strings.Split(dbColumn, "_")[1]
-				n := strings.Split(dbColumn, "_")[0]
+	for _, dbColumn := range columns {
+		var feature, n string
+		isFeature := strings.Contains(dbColumn, "feature")
 
+		if isFeature {
+			parts := strings.Split(dbColumn, "_")
+			n = parts[0]
+			feature = parts[1]
+		}
+
+		for i, colName := range header {
+			if isFeature {
 				if colName == feature {
 					csvToDBMap[n] = i
 					features = append(features, feature)
