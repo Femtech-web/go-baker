@@ -89,15 +89,38 @@ if (featuresBtn && featureInput) {
 
 // handles uploading company past data
 if (uploadBtn && uploadInput) {
+  function trimFileName(word) {
+    const extensionSlice = word.length - 5;
+    if (word.split(".")[0].length > 12) {
+      return `${word.slice(0, 10)}...${word.slice(extensionSlice)}`;
+    }
+
+    return word;
+  }
+
+  function formatFileSize(size) {
+    if (size < 1024) return `${size} B`;
+    else if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+    else return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+  }
+
+  let file = null;
   uploadBtn.addEventListener("click", () => {
     uploadInput.click();
   });
 
   uploadInput.addEventListener("change", () => {
+    file = uploadInput.files[0];
+    console.log(file);
+
+    document.querySelector(".upload-container p").textContent = `${trimFileName(
+      file.name
+    )} - ${formatFileSize(file.size)}`;
+  });
+
+  featuresSubmitBtn.addEventListener("click", () => {
     const csrfToken = document.querySelector("input[name='csrf_token']").value;
 
-    const file = uploadInput.files[0];
-    console.log(file);
     const formData = new FormData();
 
     formData.append("file", file);
@@ -111,6 +134,7 @@ if (uploadBtn && uploadInput) {
       .then((data) => {
         if (data.ok) {
           console.log("File uploaded successfully");
+          window.location.href = "/predict";
         } else {
           console.log("File upload failed");
         }

@@ -116,3 +116,10 @@ func (m *FeaturesModel) InsertRecords(
 	}
 	return nil
 }
+
+func (m *FeaturesModel) UserActive(id int) error {
+	stmt := "UPDATE users SET isActive = ? WHERE id = ?"
+
+	_, err := m.DB.Exec(stmt, true, id)
+	return err
+}

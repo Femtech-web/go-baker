@@ -21,7 +21,7 @@ func (app *application) routes() http.Handler {
 	fileServer := http.FileServer(http.FS(ui.Files))
 	router.Handler(http.MethodGet, "/static/*filepath", fileServer)
 
-	// initialize dynamic middlewares for all endpoints
+	// initialize middlewares for all routes
 	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf, app.authenticate)
 
 	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.getHome))
@@ -29,13 +29,16 @@ func (app *application) routes() http.Handler {
 	router.Handler(http.MethodPost, "/api/signup", dynamic.ThenFunc(app.userSignup))
 	router.Handler(http.MethodGet, "/login", dynamic.ThenFunc(app.getLogin))
 	router.Handler(http.MethodPost, "/api/login", dynamic.ThenFunc(app.userLogin))
-	router.Handler(http.MethodPost, "/api/logout", dynamic.ThenFunc(app.userLogout))
 
-	router.Handler(http.MethodGet, "/features", dynamic.ThenFunc(app.getFeatures))
-	router.Handler(http.MethodPost, "/api/features", dynamic.ThenFunc(app.addFeatures))
-	router.Handler(http.MethodGet, "/import", dynamic.ThenFunc(app.getImport))
-	router.Handler(http.MethodPost, "/api/import", dynamic.ThenFunc(app.savePastData))
-	router.Handler(http.MethodGet, "/predict", dynamic.ThenFunc(app.getPredict))
+	// initialize middlewares for protected routes
+	protected := dynamic.Append(app.requireAuthentication)
+
+	router.Handler(http.MethodGet, "/features", protected.ThenFunc(app.getFeatures))
+	router.Handler(http.MethodPost, "/api/features", protected.ThenFunc(app.addFeatures))
+	router.Handler(http.MethodGet, "/import", protected.ThenFunc(app.getImport))
+	router.Handler(http.MethodPost, "/api/import", protected.ThenFunc(app.savePastData))
+	router.Handler(http.MethodGet, "/predict", protected.ThenFunc(app.getPredict))
+	router.Handler(http.MethodPost, "/api/logout", protected.ThenFunc(app.userLogout))
 
 	standard := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
 

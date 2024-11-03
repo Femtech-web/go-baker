@@ -241,11 +241,21 @@ func (app *application) savePastData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	header := records[0]
-	csvToDBMap, features := app.csvMap(header, columns)
-	fmt.Printf("csvMap: %v", csvToDBMap)
-	fmt.Printf("features: %v", features)
 
+	match := app.featuresMatch(header, columns)
+	if !match {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	csvToDBMap, features := app.CSVMap(header, columns)
 	err = app.features.InsertRecords(records[1:], csvToDBMap, features)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	err = app.features.UserActive(app.currentUser(r))
 	if err != nil {
 		app.serverError(w, err)
 		return

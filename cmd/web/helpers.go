@@ -109,7 +109,39 @@ func (app *application) currentUser(r *http.Request) int {
 	return app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
 }
 
-func (app *application) csvMap(header, columns []string) (map[string]int, []string) {
+func (app *application) featuresMatch(header, columns []string) bool {
+	required := requiredFeatures(columns)
+
+	for _, field := range header {
+		if !required[field] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func requiredFeatures(columns []string) map[string]bool {
+	columnMap := make(map[string]bool)
+
+	for _, col := range columns {
+		var feature string
+		isFeature := strings.Contains(col, "feature")
+
+		if isFeature {
+			parts := strings.Split(col, "_")
+			feature = parts[1]
+
+			columnMap[feature] = true
+		} else {
+			columnMap[col] = true
+		}
+	}
+
+	return columnMap
+}
+
+func (app *application) CSVMap(header, columns []string) (map[string]int, []string) {
 	csvToDBMap := make(map[string]int)
 	features := make([]string, 0)
 
