@@ -1,5 +1,6 @@
 -- script to create user table 
 
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -14,6 +15,7 @@ ALTER TABLE users ADD CONSTRAINT users_uc_email UNIQUE (email);
 
 -- script to create session table 
 
+DROP TABLE IF EXISTS sessions;
 CREATE TABLE sessions (
   token CHAR(43) PRIMARY KEY,
   data BLOB NOT NULL,
@@ -21,3 +23,17 @@ CREATE TABLE sessions (
 );
 
 CREATE INDEX sessions_expiry_idx ON sessions (expiry);
+
+-- script to create features table 
+
+DROP TABLE IF EXISTS features;
+CREATE TABLE features (
+  id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  loaves  INTEGER NOT NULL,
+  feature1  INTEGER NOT NULL,
+  feature2  INTEGER NOT NULL,
+  feature3  INTEGER NOT NULL,
+  date DATETIME NOT NULL
+);
+-- Add an index on the date column.
+CREATE INDEX idx_snippets_created ON features(date);
